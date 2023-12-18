@@ -129,11 +129,13 @@ class HBNBCommand(cmd.Cmd):
                 key = row[0]
                 if '"' in row[1]:
                     item = row[1].split('"')[1]
+                elif '.' in row[1]:
+                    item = float(row[1])
                 else:
                     try:
                         item = int(row[1])
-                    except ValueError:
-                        item = float(row[1])
+                    except Exception:
+                        continue
                 setattr(new_instance, key, item)
         storage.save()
         print(new_instance.id)

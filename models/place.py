@@ -58,7 +58,7 @@ class Place(BaseModel, Base):
                     my_list.append(value)
             return my_list
 
-        @ammenities_id.setter
+        @amenities.setter
         def append(self, obj=None):
             if obj is not None and type(obj) is Amenity:
                 self.amenity_id = obj.id

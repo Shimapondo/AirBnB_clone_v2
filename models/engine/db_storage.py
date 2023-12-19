@@ -35,7 +35,7 @@ class DBStorage:
         from models.amenity import Amenity
         from models.review import Review
         my_dict = {}
-        my_list_dict = {'BaseModel': BaseModel, 'User': User, 'Place': Place,
+        my_list_dict = {'User': User, 'Place': Place,
                         'State': State, 'City': City, 'Amenity': Amenity,
                         'Review': Review}
         if cls is not None:
@@ -45,8 +45,8 @@ class DBStorage:
                 key = f"{obj.to_dict()['__class__']}.{obj.id}"
                 my_dict[key] = obj
         else:
-            for model in my_list:
-                query = self.__session.query(model)
+            for key in my_list_dict.keys():
+                query = self.__session.query(my_list_dict[key])
                 result = query.all()
                 for obj in result:
                     key = f"{obj.to_dict()['__class__']}.{obj.id}"

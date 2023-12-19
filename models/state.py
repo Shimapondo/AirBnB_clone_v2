@@ -18,6 +18,7 @@ class State(BaseModel, Base):
         def cities(self):
             """getter function to get the cities related to a state"""
             from models import storage
+            from models.city import City
             my_list = []
             city_dict = storage.all(City)  # contains all the city objects
             for value in city_dict.values():

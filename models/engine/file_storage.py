@@ -15,8 +15,12 @@ class FileStorage:
         else:
             new_dict = {}
             for key, item in FileStorage.__objects.items():
-                if type(item) is obj:
-                    new_dict[key] = item
+                if (type(obj) is not str):
+                    if type(item) is obj:
+                        new_dict[key] = item
+                else:
+                    if item.__class__.__name__ == obj:
+                        new_dict[key] = item
             return new_dict
 
     def new(self, obj):

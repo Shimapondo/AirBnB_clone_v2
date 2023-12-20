@@ -127,8 +127,25 @@ class HBNBCommand(cmd.Cmd):
             if not (row == str_list[0]):
                 row = row.split('=')
                 key = row[0]
+                flag = 0
                 if '"' in row[1]:
-                    item = row[1].split('"')[1]
+                    flag = 1
+                if flag == 1:
+                    tmp_list = [' ' if x == '_' else x for x in row[1]]
+                    del tmp_list[0]
+                    del tmp_list[-1]
+                    length = len(tmp_list)
+                    list_del = []
+                    sum_del = 0
+                    for i in range(length):
+                        flag = not ((i + 1) == length)
+                        if tmp_list[i] == '\\' and flag:
+                            if tmp_list[i + 1] == '"':
+                                list_del.append((i - sum_del))
+                                sum_del += 1
+                    for x in list_del:
+                        del tmp_list[x]
+                    item = ''.join(tmp_list)
                 elif '.' in row[1]:
                     item = float(row[1])
                 else:

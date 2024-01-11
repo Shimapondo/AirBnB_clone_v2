@@ -4,9 +4,9 @@
 """
 from fabric.api import local, env, put, run, cd
 from datetime import datetime
-
-
 env.hosts = ['3.84.255.85', '100.25.171.58']
+
+
 def do_pack():
     """ the function creates a tarball zip file (tgz) from the
         contents of the web_static directory
@@ -23,11 +23,13 @@ def do_pack():
     #  make the archive file
     local(f'tar -czvf {target_folder}/{zip_file_name}.tgz {source_folder}')
 
+
 def do_deploy(archive_path):
     """ function deploys an archive in the versions directory to a server
     """
     archive_name = archive_path.split('/')[-1]
     archive_name_no_extension = archive_name.split('.')[0]
+    link = '/data/web_static/current'
 
     dest_folder = f'/data/web_static/releases/{archive_name_no_extension}'
     flag = local(f"if [ -f {archive_path} ]; then\
@@ -39,16 +41,19 @@ def do_deploy(archive_path):
         return False
     flag = run(f"if [ ! -d {dest_folder} ]; then echo 'True'; fi")
     if flag:
-        run(f'mkdir {dest_folder}')
+        run(f'mkdir -p {dest_folder}')
     else:
         run(f'rm -rf {dest_folder}')
-        run(f'mkdir {dest_folder}')
+        run(f'mkdir -p {dest_folder}')
     with cd(f"{dest_folder}"):
         run(f'tar -xzf /tmp/{archive_name}')
     run(f'rm /tmp/{archive_name}')
-    run('rm -rf /data/web_static/current')
+    flag = run(f"if [ ! -f {link} ]; then echo 'True'; fi")
+    if flag:
+        pass
+    else:
+        run('rm -rf /data/web_static/current')
     run(f'mv {dest_folder}/web_static/* {dest_folder}')
     run(f'rm -rf {dest_folder}/web_static')
-    link = '/data/web_static/current'
     run(f'ln -sf {dest_folder} {link}')
     return True

@@ -43,7 +43,7 @@ chown -R ubuntu:ubuntu "${dir_list[0]}"
 
 # add a new location to the server with an alias to another
 nginx_path='/etc/nginx/sites-available/default'
-check=`grep '/hbnb_static' "$nginx_path"`
+check=$(grep '/hbnb_static' "$nginx_path")
 if [ -n "$check" ]; then
 	echo "already configured"
 else

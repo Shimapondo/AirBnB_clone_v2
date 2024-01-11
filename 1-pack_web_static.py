@@ -21,5 +21,3 @@ def do_pack():
             fi')
     #  make the archive file
     local(f'tar -czvf {target_folder}/{zip_file_name}.tgz {source_folder}')
-
-do_pack()

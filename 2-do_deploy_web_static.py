@@ -34,20 +34,19 @@ def do_pack():
 def do_deploy(archive_path):
     """ function deploys an archive in the versions directory to a server
     """
-    archive_name = archive_path.split('/')[-1]
-    archive_name_no_extension = archive_name.split('.')[0]
-    link = '/data/web_static/current'
-
-    dest_folder = f'/data/web_static/releases/{archive_name_no_extension}'
     flag = local(f"if [ -f {archive_path} ]; then\
                    echo 'True';\
                    fi", capture=True)
-    if flag:
-        put(archive_path, '/tmp/')
-    else:
+    if not flag:
         return False
     try:
+        archive_name = archive_path.split('/')[-1]
+        archive_name_no_extension = archive_name.split('.')[0]
+        link = '/data/web_static/current'
+        dest_folder = f'/data/web_static/releases/{archive_name_no_extension}'
         flag = run(f"if [ ! -d {dest_folder} ]; then echo 'True'; fi")
+
+        put(archive_path, '/tmp/')
         if flag:
             run(f'mkdir -p {dest_folder}')
         else:
@@ -64,7 +63,6 @@ def do_deploy(archive_path):
         run(f'mv {dest_folder}/web_static/* {dest_folder}')
         run(f'rm -rf {dest_folder}/web_static')
         run(f'ln -sf {dest_folder} {link}')
-
         return True
     except Exception:
         return False

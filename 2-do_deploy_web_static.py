@@ -5,7 +5,7 @@
 from fabric.api import local, env, put, run, cd
 from datetime import datetime
 user = local('whoami', capture=True)
-env.hosts = [f'{user}@127.0.0.1', '3.84.255.85', '100.25.171.58']
+env.hosts = [f'{user}@localhost', '3.84.255.85', '100.25.171.58']
 
 
 def do_pack():
@@ -49,12 +49,12 @@ def do_deploy(archive_path):
     with cd(f"{dest_folder}"):
         run(f'tar -xzf /tmp/{archive_name}')
     run(f'rm /tmp/{archive_name}')
+    run(f'mv {dest_folder}/web_static/* {dest_folder}')
     flag = run(f"if [ ! -f {link} ]; then echo 'True'; fi")
     if flag:
         pass
     else:
         run('rm -rf /data/web_static/current')
-    run(f'mv {dest_folder}/web_static/* {dest_folder}')
     run(f'rm -rf {dest_folder}/web_static')
     run(f'ln -sf {dest_folder} {link}')
     return True

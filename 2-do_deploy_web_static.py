@@ -2,7 +2,7 @@
 """ the script that contains the necessary functions for deploying a
     website to a remote server
 """
-from fabric.api import local, env, put, run, cd
+from fabric.api import local, env, put, run, cd, lcd
 from datetime import datetime
 from os.path import exists
 user = local('whoami', capture=True)
@@ -35,34 +35,31 @@ def do_pack():
 def do_deploy(archive_path):
     """ function deploys an archive in the versions directory to a server
     """
+    env.user = user
     archive_name = archive_path.split('/')[-1]
     archive_name_no_extension = archive_name.split('.')[0]
     link = '/data/web_static/current'
-
     dest_folder = f'/data/web_static/releases/{archive_name_no_extension}'
-    flag = local(f"if [ -f {archive_path} ]; then\
-                   echo 'True';\
-                   fi", capture=True)
-    if flag:
-        put(archive_path, '/tmp/')
-    else:
+
+    if not exists(f'{archive_path}'):
         return False
-    flag = run(f"if [ ! -d {dest_folder} ]; then echo 'True'; fi")
+    flag = local(f"if [ ! -d {dest_folder} ]; then echo 'True'; fi")
     if flag:
-        run(f'mkdir -p {dest_folder}')
+        local(f'sudo mkdir -p {dest_folder}')
     else:
-        run(f'rm -rf {dest_folder}')
-        run(f'mkdir -p {dest_folder}')
-    with cd(f"{dest_folder}"):
-        run(f'tar -xzf /tmp/{archive_name}')
-    run(f'rm /tmp/{archive_name}')
-    flag = run(f"if [ ! -f {link} ]; then echo 'True'; fi")
+        local(f'sudo rm -rf {dest_folder}')
+        local(f'sudo mkdir -p {dest_folder}')
+    local(f'sudo mv {archive_path} /tmp/{archive_name}')
+    with lcd(f"{dest_folder}"):
+        local(f'sudo tar -xzf /tmp/{archive_name}')
+    local(f'sudo rm /tmp/{archive_name}')
+    flag = local(f"if [ ! -f {link} ]; then echo 'True'; fi")
     if flag:
         pass
     else:
-        run('rm -rf /data/web_static/current')
-    run(f'mv {dest_folder}/web_static/* {dest_folder}')
-    run(f'rm -rf {dest_folder}/web_static')
-    run(f'ln -sf {dest_folder} {link}')
+        local('sudo rm -rf /data/web_static/current')
+    local(f'sudo mv {dest_folder}/web_static/* {dest_folder}')
+    local(f'sudo rm -rf {dest_folder}/web_static')
+    local(f'sudo ln -sf {dest_folder} {link}')
 
     return True

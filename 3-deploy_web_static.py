@@ -61,7 +61,7 @@ def do_deploy(archive_path):
         run('rm -rf /data/web_static/current')
     run(f'mv {dest_folder}/web_static/* {dest_folder}')
     run(f'rm -rf {dest_folder}/web_static')
-    run(f'ln -sf {dest_folder} {link}')
+    run(f'ln -sf {dest_folder}/ {link}')
     return True
 
 

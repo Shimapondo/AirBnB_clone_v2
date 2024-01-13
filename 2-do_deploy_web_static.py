@@ -4,6 +4,7 @@
 """
 from fabric.api import local, env, put, run, cd
 from datetime import datetime
+from os.path import exists
 env.hosts = ['3.84.255.85', '100.25.171.58']
 
 
@@ -34,10 +35,10 @@ def do_pack():
 def do_deploy(archive_path):
     """ function deploys an archive in the versions directory to a server
     """
-    flag = local(f"if [ -f {archive_path} ]; then\
-                   echo 'True';\
-                   fi", capture=True)
-    if not flag:
+    # flag = local(f"if [ -f {archive_path} ]; then\
+    #               echo 'True';\
+    #               fi", capture=True)
+    if exists(archive_path) is False:
         return False
     try:
         archive_name = archive_path.split('/')[-1]
@@ -46,13 +47,13 @@ def do_deploy(archive_path):
         dest_folder = f'/data/web_static/releases/{archive_name_no_extension}'
 
         put(archive_path, '/tmp/')
-        run(f'mkdir -p {dest_folder}')
+        run(f'mkdir -p {dest_folder}/')
         run(f'tar -xzf /tmp/{archive_name} -C {dest_folder}')
         run(f'rm /tmp/{archive_name}')
-        run('rm -rf /data/web_static/current')
         run(f'mv {dest_folder}/web_static/* {dest_folder}')
-        run(f'rm -rf {dest_folder}/web_static')
-        run(f'ln -s {dest_folder} {link}')
+        run(f'rm -rf {dest_folder}/web_static/')
+        run('rm -rf /data/web_static/current')
+        run(f'ln -s {dest_folder}/ {link}/')
         return True
     except Exception:
         return False

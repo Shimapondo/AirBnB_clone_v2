@@ -52,8 +52,7 @@ def do_deploy(archive_path):
     else:
         run(f'rm -rf {dest_folder}')
         run(f'mkdir -p {dest_folder}')
-    with cd(f"{dest_folder}"):
-        run(f'tar -xzf /tmp/{archive_name}')
+    run(f'tar -xzf /tmp/{archive_name} -C {dest_folder}')
     run(f'rm /tmp/{archive_name}')
     flag = run(f"if [ ! -f {link} ]; then echo 'True'; fi")
     if flag:
@@ -63,7 +62,6 @@ def do_deploy(archive_path):
     run(f'mv {dest_folder}/web_static/* {dest_folder}')
     run(f'rm -rf {dest_folder}/web_static')
     run(f'ln -sf {dest_folder} {link}')
-
     return True
 
 

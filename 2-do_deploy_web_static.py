@@ -44,25 +44,15 @@ def do_deploy(archive_path):
         archive_name_no_extension = archive_name.split('.')[0]
         link = '/data/web_static/current'
         dest_folder = f'/data/web_static/releases/{archive_name_no_extension}'
-        flag = run(f"if [ ! -d {dest_folder} ]; then echo 'True'; fi")
 
         put(archive_path, '/tmp/')
-        if flag:
-            run(f'mkdir -p {dest_folder}')
-        else:
-            run(f'rm -rf {dest_folder}')
-            run(f'mkdir -p {dest_folder}')
-        with cd(f"{dest_folder}"):
-            run(f'tar -xzf /tmp/{archive_name}')
+        run(f'mkdir -p {dest_folder}')
+        run(f'tar -xzf /tmp/{archive_name} -C {dest_folder}')
         run(f'rm /tmp/{archive_name}')
-        flag = run(f"if [ ! -f {link} ]; then echo 'True'; fi")
-        if flag:
-            pass
-        else:
-            run('rm -rf /data/web_static/current')
+        run('rm -rf /data/web_static/current')
         run(f'mv {dest_folder}/web_static/* {dest_folder}')
         run(f'rm -rf {dest_folder}/web_static')
-        run(f'ln -sf {dest_folder} {link}')
+        run(f'ln -s {dest_folder} {link}')
         return True
     except Exception:
         return False

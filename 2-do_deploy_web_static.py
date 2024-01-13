@@ -4,7 +4,8 @@
 """
 from fabric.api import local, env, put, run, cd
 from datetime import datetime
-env.hosts = ['3.84.255.85', '100.25.171.58']
+user = local('whoami', capture=True)
+env.hosts = [f'{user}@127.0.0.1', '3.84.255.85', '100.25.171.58']
 
 
 def do_pack():

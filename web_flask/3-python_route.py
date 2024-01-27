@@ -33,6 +33,8 @@ def python(text="is cool"):
     """displays python followed by a custom string where
        the default is 'is cool'
     """
+    if not text:
+        text = 'is cool'
     return f"Python {escape(text.replace('_', ' '))}"
 
 

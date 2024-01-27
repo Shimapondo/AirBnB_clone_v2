@@ -18,23 +18,19 @@ def cities():
     """renders an html page that lists the states and the cities in them
     """
     state_list = storage.all(State).values()
-    sorted_list = sorted(state_list, key=lambda obj: obj.name)
-    return render_template('7-states_list.html', objs=sorted_list)
+    return render_template('7-states_list.html', objs=state_list)
 
 
 @app.route('/states/<id>', strict_slashes=False)
 def city(id):
     """renders an html page for a given state with its cities
     """
-    state_list = storage.all(State).values()
-    sorted_list = sorted(state_list, key=lambda state: state.name)
     obj = None
-    for state in sorted_list:
+    state_list = storage.all(State).values()
+    for state in state_list:
         if id == state.id:
             obj = state
             break
-    if obj is not None:
-        obj.cities = sorted(obj.cities, key=lambda city: city.name)
     return render_template('9-states.html', obj=obj)
 
 

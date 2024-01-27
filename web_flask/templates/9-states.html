@@ -8,7 +8,7 @@
 		<H1>State: {{ obj.name }}</H1>
 			<H3>Cities:</H3>
 			<UL>
-				{% for city in obj.cities %}
+				{% for city in obj.cities|sort(attribute='name') %}
 					<LI>{{ city.id }}: <B>{{ city.name }}</B></LI>
 				{% endfor %}
 			</UL>

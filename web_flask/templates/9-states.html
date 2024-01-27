@@ -6,14 +6,14 @@
 	<BODY>
 		{% if obj %}
 		<H1>State: {{ obj.name }}</H1>
-			<H3>Cities:</H3>
-			<UL>
-				{% for city in obj.cities|sort(attribute='name') %}
-					<LI>{{ city.id }}: <B>{{ city.name }}</B></LI>
-				{% endfor %}
-			</UL>
+		<H3>Cities:</H3>
+		<UL>
+			{% for city in obj.cities|sort(attribute='name') %}
+			<LI>{{ city.id }}: <B>{{ city.name }}</B></LI>
+			{% endfor %}
+		</UL>
 		{% else %}
-			<H1>Not found!</H1>
+		<H1>Not found!</H1>
 		{% endif %}
 	</BODY>
 </HTML>

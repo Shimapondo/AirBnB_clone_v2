@@ -13,15 +13,13 @@ def close_session(exception=None):
     storage.close
 
 
-@app.route('/cities_by_states', strict_slashes=False)
+@app.route('/states', strict_slashes=False)
 def cities():
     """renders an html page that lists the states and the cities in them
     """
     state_list = storage.all(State).values()
     sorted_list = sorted(state_list, key=lambda obj: obj.name)
-    for state in sorted_list:
-        state.cities = sorted(state.cities, key=lambda city: city.name)
-    return render_template('8-cities_by_states.html', objs=sorted_list)
+    return render_template('7-states_list.html', objs=sorted_list)
 
 
 @app.route('/states/<id>', strict_slashes=False)

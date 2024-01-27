@@ -77,11 +77,10 @@ class DBStorage:
         from models.review import Review
         Base.metadata.create_all(self.__engine)
         Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        ScopedSession = scoped_session(Session)
-        self.__session = ScopedSession()
+        #  ScopedSession = scoped_session(Session)
+        self.__session = scoped_session(Session)
 
     def close(self):
         """calls the remove method of the object
         """
-        self.__session.close()
-
+        self.__session.remove()

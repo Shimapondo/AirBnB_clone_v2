@@ -30,7 +30,7 @@ def C(text):
 
 @app.route('/python/<text>', defaults={'text': "is cool"},
            strict_slashes=False)
-def python(text="is cool"):
+def python(text):
     """displays python followed by a custom string where
        the default is 'is cool'
     """

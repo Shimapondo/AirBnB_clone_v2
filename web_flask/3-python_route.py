@@ -28,7 +28,8 @@ def C(text):
     return f"C {escape(mod_string)}"
 
 
-@app.route('/python/<text>', strict_slashes=False)
+@app.route('/python/<text>', defaults={'text': "is cool"},
+           strict_slashes=False)
 def python(text="is cool"):
     """displays python followed by a custom string where
        the default is 'is cool'

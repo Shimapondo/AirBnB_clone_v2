@@ -10,7 +10,7 @@ app = Flask(__name__)
 def close_session(exception=None):
     """ calls the close method on storage with every request
     """
-    storage.close
+    storage.close()
 
 
 @app.route('/states', strict_slashes=False)

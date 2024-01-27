@@ -57,10 +57,12 @@ def old_or_even(n):
     """checks is n is old or even and does something based on that
     """
     if n % 2 == 0:
-        return render_template('6-number_odd_or_even.html',
-                           vaue=f"{n} is even")
+        value = f"{n} is even"
+    else:
+        value = f"{n} is odd"
+
     return render_template('6-number_odd_or_even.html',
-                           vaue=f"{n} is old")
+                           value=value)
 
 
 if __name__ == '__main__':

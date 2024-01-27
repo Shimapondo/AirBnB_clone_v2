@@ -4,10 +4,6 @@
 from flask import Flask, render_template
 from models import storage, State
 app = Flask(__name__)
-state_list = storage.all(State).values()
-sorted_list = sorted(state_list, key=lambda obj: obj.name)
-for state in sorted_list:
-    state.cities = sorted(state.cities, key=lambda city: city.name)
 
 
 @app.teardown_appcontext
@@ -21,6 +17,10 @@ def close_session(exception=None):
 def cities():
     """renders an html page that lists the states and the cities in them
     """
+    state_list = storage.all(State).values()
+    sorted_list = sorted(state_list, key=lambda obj: obj.name)
+    for state in sorted_list:
+        state.cities = sorted(state.cities, key=lambda city: city.name)
     return render_template('8-cities_by_states.html', objs=sorted_list)
 
 

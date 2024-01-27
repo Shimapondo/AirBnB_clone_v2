@@ -58,7 +58,7 @@ def old_or_even(n):
         return render_template('6-number_odd_or_even.html',
                                value=f"{n} is even")
     return render_template('6-number_odd_or_even.html',
-                           vaue=f" {n} is old")
+                           vaue=f"{n} is old")
 
 
 if __name__ == '__main__':

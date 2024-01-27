@@ -27,13 +27,13 @@ def city(id):
     """renders an html page for a given state with its cities
     """
     state_list = storage.all(State).values()
-    sorted_list = sorted(state_list, key=lambda obj: obj.name)
+    sorted_list = sorted(state_list, key=lambda state: state.name)
     obj = None
     for state in sorted_list:
         if id == state.id:
             obj = state
             break
-    if obj:
+    if obj is not None:
         obj.cities = sorted(obj.cities, key=lambda city: city.name)
     return render_template('9-states.html', obj=obj)
 

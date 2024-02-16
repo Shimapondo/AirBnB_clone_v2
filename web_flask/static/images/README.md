@@ -1,1 +1,1 @@
-folder contains all the images used in the html templates
+Folder contains all the images used in the html templates
